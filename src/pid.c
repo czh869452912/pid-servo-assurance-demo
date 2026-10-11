@@ -29,7 +29,7 @@ PidStatus pid_step(Pid *pid, double reference, double measurement, bool enabled,
         reference > 10000.0 || measurement < -10000.0 || measurement > 10000.0) return PID_INVALID;
     const PidConfig c = pid->config;
     const double error = reference - measurement;
-    const double derivative = pid->ready ? -c.kd * (measurement - pid->previous) / c.dt : 0.0;
+    const double derivative = pid->ready ? c.kd * (measurement - pid->previous) / c.dt : 0.0;
     double integral = clamp(pid->integral + c.ki * error * c.dt, c.min, c.max);
     double raw = c.kp * error + integral + derivative;
     if ((raw > c.max && error > 0.0) || (raw < c.min && error < 0.0)) {
