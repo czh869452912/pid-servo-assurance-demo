@@ -1,0 +1,92 @@
+{
+  "requirements": [
+    {
+      "id": "REQ-PID-001",
+      "title": "有效参数与拒绝非法配置",
+      "statement": "参数：Kp/Ki/Kd 为有限实数0至100，含两端；dt为0.001至1秒，含两端；下限[-100,0]、上限[0,100]且下限小于上限。接受有效配置，非法配置返回INVALID并保持未初始化。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    },
+    {
+      "id": "REQ-PID-002",
+      "title": "比例项",
+      "statement": "启用时比例项为Kp×(参考−测量)。当Kp=2、Ki=Kd=0、参考3、测量1、输出范围[-10,10]时，输出4。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    },
+    {
+      "id": "REQ-PID-003",
+      "title": "固定周期积分",
+      "statement": "积分候选为上一积分+Ki×误差×dt，并限制在输出上下限内。无饱和时Ki=2、误差1、dt=0.1，连续两次输出0.2、0.4。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    },
+    {
+      "id": "REQ-PID-004",
+      "title": "测量微分与无参考冲击",
+      "statement": "微分项为−Kd×(本次测量−上次有效测量)/dt；首个有效采样为0。Kd=1、dt=0.1、测量0→0.5时输出−5；参考变化而测量不变时微分项为0。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    },
+    {
+      "id": "REQ-PID-005",
+      "title": "输出饱和",
+      "statement": "合成输出限制在配置上下限并包含两端。在[-10,10]输出范围，大正误差输出10，大负误差输出−10。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    },
+    {
+      "id": "REQ-PID-006",
+      "title": "条件积分抗饱和",
+      "statement": "合成候选高于上限且误差正，或低于下限且误差负时，拒绝该步积分更新并使用原积分重新合成。持续正负饱和不得积累推动进一步饱和的积分。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    },
+    {
+      "id": "REQ-PID-007",
+      "title": "禁用与复位",
+      "statement": "禁用或显式复位应清除积分与测量历史，禁用输出0；重新启用首次采样微分为0。禁用优先于输入数值检查，仍要求有效对象和输出指针。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    },
+    {
+      "id": "REQ-PID-008",
+      "title": "非法输入与状态保持",
+      "statement": "启用时参考和测量均须为有限实数[-10000,10000]。非法数值、未初始化或空控制器返回INVALID，有有效输出指针时置0，非法输入不得更新历史；空输出指针返回INVALID。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/pid.c",
+      "tests": [
+        "tests/test_pid.c"
+      ]
+    }
+  ]
+}

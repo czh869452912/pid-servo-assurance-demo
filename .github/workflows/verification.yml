@@ -1,0 +1,28 @@
+name: PID verification
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  requirements-and-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check requirement traceability
+        run: python3 tools/check_traceability.py
+      - name: Build with warnings as errors
+        run: cmake -S . -B build && cmake --build build
+      - name: Execute requirement-based tests
+        run: ctest --test-dir build --output-on-failure --output-junit report.xml
+      - name: Archive evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-${{ github.sha }}
+          path: |
+            build/report.xml
+            .factory/traceability.json
+            docs/SRS.md
+            docs/SDD.md

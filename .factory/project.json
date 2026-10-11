@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "configurationItem": "CSCI-PID-SERVO",
+  "name": "PID 伺服控制配置项",
+  "phase": "verification",
+  "phaseMeaning": "由受版本控制的示例过程定义声明；CI 不自动推进阶段",
+  "steps": [
+    { "id": "planning", "name": "计划与配置", "evidence": "docs/PLAN.md" },
+    { "id": "requirements", "name": "需求与评审", "evidence": "docs/SRS.md", "source": "GitHub Issues / requirement" },
+    { "id": "design", "name": "设计与分配", "evidence": "docs/SDD.md" },
+    { "id": "implementation", "name": "编码与变更", "evidence": "src/pid.c", "source": "GitHub PR" },
+    { "id": "verification", "name": "需求验证", "evidence": "docs/SVP.md", "source": "GitHub Actions / JUnit" },
+    { "id": "baseline", "name": "评审与基线", "evidence": "docs/SCM-SQA.md", "source": "GitHub PR reviews / release" }
+  ],
+  "releaseGates": ["需求与设计人工评审", "指定提交全部验证通过", "指定提交变更独立评审", "无未处置问题报告", "受控配置索引与质量记录"],
+  "assurance": "教学过程模拟；无安全等级分配、适航符合性或军用质量认证结论"
+}
