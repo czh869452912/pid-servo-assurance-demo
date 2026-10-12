@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "1.0", "id": "CSCI-PID-SERVO", "name": "PID 伺服控制配置项", "scope": "local-bench", "approval": "not-approved",
+  "process": ".factory/project.json", "traceability": ".factory/traceability.json",
+  "capabilityIds": ["requirement.review", "test.suggest", "trace.audit", "design.inspect", "quality.audit", "verification.run"],
+  "documents": [
+    { "kind": "plan", "path": "docs/PLAN.md" }, { "kind": "requirements", "path": "docs/SRS.md" }, { "kind": "design", "path": "docs/SDD.md" },
+    { "kind": "interface", "path": "docs/IDD.md" }, { "kind": "verification-plan", "path": "docs/SVP.md" }, { "kind": "test-description", "path": "docs/STD.md" },
+    { "kind": "configuration-index", "path": "docs/CM.md" }, { "kind": "quality", "path": "docs/SCM-SQA.md" }, { "kind": "safety-applicability", "path": "docs/SAFETY.md" }, { "kind": "lifecycle", "path": "docs/LIFECYCLE.md" }
+  ],
+  "modules": [
+    { "id": "pid-controller", "sources": ["src/pid.c"], "interfaces": ["include/pid.h"] },
+    { "id": "servo-supervisor", "sources": ["src/servo.c"], "interfaces": ["include/servo.h"] }
+  ],
+  "verification": { "levels": ["unit", "integration", "configuration-item"], "runner": "cmake-ctest", "evidence": "captured-input-junit", "coverage": "not-collected" }
+}

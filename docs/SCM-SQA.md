@@ -1,5 +1,7 @@
 # 配置管理与质量记录约定
 
+## 1 工程约定
+
 受控项：SRS、SDD、SVP、过程定义、追溯矩阵、接口、实现、测试、CI 工作流。每次变更由 Git commit SHA 标识；CI 证据记录对应 SHA、run ID、attempt、结论。Issue 正文有独立 updated_at/内容哈希，不能与 Git 文档版本混同。
 
 需求 Issue 使用 `requirement` 标签与 REQ-PID 编号。需求变更应同步 SRS、设计分配、测试和矩阵，经 PR 评审后形成新的受控版本。GitHub Issue 编辑与提交不是原子事务，演示不声称已实现正式需求基线冻结。

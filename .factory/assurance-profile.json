@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "configurationItem": "CSCI-PID-SERVO",
+  "softwareLevel": "unassigned",
+  "safetyAssessmentRef": null,
+  "standardApplicability": [
+    { "standard": "GJB 438C-2021", "use": "开发文档内容和追踪参考；本项目模板为裁剪工程样件，未覆盖全部条款", "approval": "pending" },
+    { "standard": "DO-178C / FAA AC 20-115D", "use": "过程目标、活动和证据组织参考；未指定民机审定项目或软件等级", "approval": "pending" },
+    { "standard": "GJB 5000B", "use": "建议书过程参考；尚缺标准原文，条款检查禁用", "approval": "source-unavailable" }
+  ],
+  "model": "not-used-by-deterministic-checks",
+  "prompt": "not-applicable",
+  "skill": "engineering-assurance/0.1.0",
+  "formalApproval": "not-approved",
+  "requiredDocuments": ["PLAN", "SRS", "SDD", "IDD", "SVP", "STD", "SCM-SQA", "SAFETY", "CM"]
+}

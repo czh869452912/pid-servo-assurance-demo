@@ -13,5 +13,13 @@
     { "id": "baseline", "name": "评审与基线", "evidence": "docs/SCM-SQA.md", "source": "GitHub PR reviews / release" }
   ],
   "releaseGates": ["需求与设计人工评审", "指定提交全部验证通过", "指定提交变更独立评审", "无未处置问题报告", "受控配置索引与质量记录"],
+  "links": [
+    { "from": "planning", "to": "requirements", "relation": "requires-evidence" },
+    { "from": "requirements", "to": "design", "relation": "requires-evidence" },
+    { "from": "design", "to": "implementation", "relation": "requires-evidence" },
+    { "from": "design", "to": "verification", "relation": "requires-evidence" },
+    { "from": "implementation", "to": "verification", "relation": "requires-evidence" },
+    { "from": "verification", "to": "baseline", "relation": "requires-evidence" }
+  ],
   "assurance": "教学过程模拟；无安全等级分配、适航符合性或军用质量认证结论"
 }

@@ -10,19 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Check requirement traceability
         run: python3 tools/check_traceability.py
       - name: Build with warnings as errors
         run: cmake -S . -B build && cmake --build build
       - name: Execute requirement-based tests
         run: ctest --test-dir build --output-on-failure --output-junit report.xml
+      - name: Capture versioned lifecycle evidence
+        if: always()
+        run: python3 tools/verification_evidence.py
       - name: Archive evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: verification-${{ github.sha }}
+          name: lifecycle-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
           path: |
+            build/verification.json
             build/report.xml
-            .factory/traceability.json
-            docs/SRS.md
-            docs/SDD.md
+            .factory/
+            docs/
+            CMakeLists.txt
+            tools/

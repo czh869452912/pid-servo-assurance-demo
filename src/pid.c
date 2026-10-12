@@ -1,6 +1,11 @@
 #include "pid.h"
 #include <math.h>
 #include <stddef.h>
+/* Allocation: REQ-PID-001 parameter validation; REQ-PID-002 proportional;
+ * REQ-PID-003 integral; REQ-PID-004 measurement derivative;
+ * REQ-PID-005 saturation; REQ-PID-006 anti-windup;
+ * REQ-PID-007 reset/disable; REQ-PID-008 invalid inputs/state retention.
+ * References are trace evidence, not proof of algorithm correctness. */
 static double clamp(double value, double low, double high) {
     return value < low ? low : value > high ? high : value;
 }
