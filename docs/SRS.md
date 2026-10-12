@@ -30,3 +30,12 @@ CSCI-PID-SERVO；所有需求来源为虚构台架上层需求 SYS-DEMO-001。�
 ## 5 追溯与批准
 
 上述 ID 映射到 SDD 单元、代码和测试，机器可读数据见 `../.factory/traceability.json`。GitHub Issue 标题保留稳定 ID，Issue 编号只是平台标识。关闭 Issue 不替代需求评审或验证批准。当前需求版本为演示初稿，正式批准未完成。
+
+## 监督层扩展（待人工评审的台架衍生需求）
+
+- REQ-PID-009 / DD-PID-09：有效配置下，监督层应在有效采样后进入ACTIVE并调用PID，输出由PID限幅。台架模型y(k+1)=y(k)+0.05u(k)，r=1、Kp=2、Ki=Kd=0、dt=0.1、y(0)=0，200步后|y-1|<1e-6；该模型不代表飞机动力学。 验证：REQ-SERVO-SIM。
+- REQ-PID-010 / DD-PID-10：启用时sensor_valid=false或PID报告非法数值应进入FAULT，输出0并清PID历史。0输出是台架假设，须由上层确认其真实安全性。 验证：REQ-SERVO-SENSOR, REQ-SERVO-SIM。
+- REQ-PID-011 / DD-PID-11：启用后连续采样时间戳必须严格递增；相邻间隔不得超过2×floor(dt×1000000)微秒，含该上界；违例进入FAULT并输出0。首个采样不限制绝对时刻。 验证：REQ-SERVO-TIME。
+- REQ-PID-012 / DD-PID-12：FAULT应锁存；恢复有效输入或禁用不自动清故障。显式servo_reset清历史与采样时刻并进入DISABLED，之后有效启用可进入ACTIVE。 验证：REQ-SERVO-RECOVERY, REQ-SERVO-SIM。
+
+监督层模块为 SU-SERVO，接口 include/servo.h，实现 src/servo.c。单元、模块集成与配置项台架仿真分别执行；仿真输入为确定性台架模型，目标机与真实航空系统测试未执行。

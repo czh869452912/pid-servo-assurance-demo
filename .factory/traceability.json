@@ -9,6 +9,15 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "interface",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-01",
+      "testNames": [
+        "REQ-PID-RANGE"
       ]
     },
     {
@@ -20,6 +29,15 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "functional",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-02",
+      "testNames": [
+        "REQ-PID-P"
       ]
     },
     {
@@ -31,6 +49,15 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "functional",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-03",
+      "testNames": [
+        "REQ-PID-I"
       ]
     },
     {
@@ -42,6 +69,15 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "functional",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-04",
+      "testNames": [
+        "REQ-PID-D"
       ]
     },
     {
@@ -53,6 +89,15 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "safety",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-05",
+      "testNames": [
+        "REQ-PID-SAT"
       ]
     },
     {
@@ -64,6 +109,15 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "safety",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-06",
+      "testNames": [
+        "REQ-PID-AW"
       ]
     },
     {
@@ -75,6 +129,15 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "safety",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-07",
+      "testNames": [
+        "REQ-PID-RESET"
       ]
     },
     {
@@ -86,7 +149,106 @@
       "code": "src/pid.c",
       "tests": [
         "tests/test_pid.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "interface",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-08",
+      "testNames": [
+        "REQ-PID-INVALID"
       ]
+    },
+    {
+      "id": "REQ-PID-009",
+      "title": "监督执行与台架闭环",
+      "statement": "有效配置下，监督层应在有效采样后进入ACTIVE并调用PID，输出由PID限幅。台架模型y(k+1)=y(k)+0.05u(k)，r=1、Kp=2、Ki=Kd=0、dt=0.1、y(0)=0，200步后|y-1|<1e-6；该模型不代表飞机动力学。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/servo.c",
+      "tests": [
+        "tests/test_servo.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "functional",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-09",
+      "testNames": [
+        "REQ-SERVO-SIM"
+      ],
+      "origin": "bench-derived-candidate",
+      "approval": "pending"
+    },
+    {
+      "id": "REQ-PID-010",
+      "title": "无效传感器与台架安全输出",
+      "statement": "启用时sensor_valid=false或PID报告非法数值应进入FAULT，输出0并清PID历史。0输出是台架假设，须由上层确认其真实安全性。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/servo.c",
+      "tests": [
+        "tests/test_servo.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "safety",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-10",
+      "testNames": [
+        "REQ-SERVO-SENSOR",
+        "REQ-SERVO-SIM"
+      ],
+      "origin": "bench-derived-candidate",
+      "approval": "pending"
+    },
+    {
+      "id": "REQ-PID-011",
+      "title": "采样时刻监控",
+      "statement": "启用后连续采样时间戳必须严格递增；相邻间隔不得超过2×floor(dt×1000000)微秒，含该上界；违例进入FAULT并输出0。首个采样不限制绝对时刻。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/servo.c",
+      "tests": [
+        "tests/test_servo.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "performance",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-11",
+      "testNames": [
+        "REQ-SERVO-TIME"
+      ],
+      "origin": "bench-derived-candidate",
+      "approval": "pending"
+    },
+    {
+      "id": "REQ-PID-012",
+      "title": "故障锁存与显式恢复",
+      "statement": "FAULT应锁存；恢复有效输入或禁用不自动清故障。显式servo_reset清历史与采样时刻并进入DISABLED，之后有效启用可进入ACTIVE。",
+      "source": "docs/SRS.md",
+      "design": "docs/SDD.md",
+      "code": "src/servo.c",
+      "tests": [
+        "tests/test_servo.c"
+      ],
+      "parentIds": [
+        "SYS-DEMO-001"
+      ],
+      "type": "safety",
+      "softwareLevel": "unassigned",
+      "designId": "DD-PID-12",
+      "testNames": [
+        "REQ-SERVO-RECOVERY",
+        "REQ-SERVO-SIM"
+      ],
+      "origin": "bench-derived-candidate",
+      "approval": "pending"
     }
   ]
 }

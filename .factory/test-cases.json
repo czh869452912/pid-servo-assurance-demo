@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "id": "TC-PID-001",
+      "requirementIds": [
+        "REQ-PID-001"
+      ],
+      "testName": "REQ-PID-RANGE",
+      "level": "unit",
+      "types": [
+        "functional",
+        "robustness"
+      ],
+      "initialState": "控制器清零；默认配置 Kp=2,Ki=Kd=0,dt=0.1,限值±10",
+      "inputs": "有效上下边界、dt=0、Kp越界/NaN、输出下限不含0",
+      "execution": "运行 test_pid RANGE，逐步检查返回值和状态",
+      "expected": "合法配置OK；非法配置INVALID并initialized=false",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-PID-002",
+      "requirementIds": [
+        "REQ-PID-002"
+      ],
+      "testName": "REQ-PID-P",
+      "level": "unit",
+      "types": [
+        "functional",
+        "regression"
+      ],
+      "initialState": "有效初始化，Kp=2,Ki=Kd=0",
+      "inputs": "r=3,y=1,enabled=true",
+      "execution": "运行 test_pid P，逐步检查返回值和状态",
+      "expected": "输出4",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-PID-003",
+      "requirementIds": [
+        "REQ-PID-003"
+      ],
+      "testName": "REQ-PID-I",
+      "level": "unit",
+      "types": [
+        "functional",
+        "regression"
+      ],
+      "initialState": "有效初始化，Kp=Kd=0,Ki=2,dt=0.1",
+      "inputs": "连续两步 r=1,y=0,enabled=true",
+      "execution": "运行 test_pid I，逐步检查返回值和状态",
+      "expected": "输出0.2、0.4",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-PID-004",
+      "requirementIds": [
+        "REQ-PID-004"
+      ],
+      "testName": "REQ-PID-D",
+      "level": "unit",
+      "types": [
+        "functional",
+        "regression"
+      ],
+      "initialState": "有效初始化，Kp=Ki=0,Kd=1,dt=0.1",
+      "inputs": "(r,y)=(0,0)→(0,0.5)→(99,0.5)",
+      "execution": "运行 test_pid D，逐步检查返回值和状态",
+      "expected": "输出0、-5、0；参考变化无微分冲击",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-PID-005",
+      "requirementIds": [
+        "REQ-PID-005"
+      ],
+      "testName": "REQ-PID-SAT",
+      "level": "unit",
+      "types": [
+        "functional",
+        "regression"
+      ],
+      "initialState": "有效初始化，Kp=2,Ki=Kd=0,限值±10",
+      "inputs": "(r,y)=(10000,-10000)→(-10000,10000)",
+      "execution": "运行 test_pid SAT，逐步检查返回值和状态",
+      "expected": "输出10、-10",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-PID-006",
+      "requirementIds": [
+        "REQ-PID-006"
+      ],
+      "testName": "REQ-PID-AW",
+      "level": "unit",
+      "types": [
+        "functional",
+        "regression"
+      ],
+      "initialState": "有效初始化，Kp=2,Ki=1,Kd=0,dt=0.1,限值±10",
+      "inputs": "100步正误差100→误差0→100步负误差-100",
+      "execution": "运行 test_pid AW，逐步检查返回值和状态",
+      "expected": "饱和不积累积分；误差0输出0",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-PID-007",
+      "requirementIds": [
+        "REQ-PID-007"
+      ],
+      "testName": "REQ-PID-RESET",
+      "level": "unit",
+      "types": [
+        "functional",
+        "regression"
+      ],
+      "initialState": "有效初始化，Kp=0,Ki=Kd=1,dt=0.1",
+      "inputs": "有效采样→禁用→重新启用→显式复位",
+      "execution": "运行 test_pid RESET，逐步检查返回值和状态",
+      "expected": "禁用输出0并清历史；重新启用首次微分0；复位清历史",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-PID-008",
+      "requirementIds": [
+        "REQ-PID-008"
+      ],
+      "testName": "REQ-PID-INVALID",
+      "level": "unit",
+      "types": [
+        "functional",
+        "robustness"
+      ],
+      "initialState": "有效初始化并执行一次合法采样，保存历史快照",
+      "inputs": "NaN参考、越界参考、Infinity测量、空控制器、空输出",
+      "execution": "运行 test_pid INVALID，逐步检查返回值和状态",
+      "expected": "非法调用INVALID；有输出存储则置0；非法数值不更新历史",
+      "tolerance": "浮点绝对误差 <1e-9；枚举/布尔精确相等；无目标机时序结论",
+      "termination": "全部检查通过返回0；首项失败返回1并打印行号；每次运行使用新进程"
+    },
+    {
+      "id": "TC-SERVO-SENSOR",
+      "requirementIds": [
+        "REQ-PID-009",
+        "REQ-PID-010"
+      ],
+      "testName": "REQ-SERVO-SENSOR",
+      "level": "integration",
+      "types": [
+        "interface",
+        "safety",
+        "regression"
+      ],
+      "initialState": "Servo清零，有效配置Kp=2,Ki=Kd=0,dt=0.1,限幅±10；台架模型初始y=0",
+      "inputs": "有效采样→sensor_valid=false",
+      "execution": "运行test_servo SENSOR；调用真实监督层和PID，逐步断言状态/输出",
+      "expected": "ACTIVE输出2→FAULT输出0并清历史",
+      "tolerance": "普通浮点绝对误差<1e-9；闭环终值<1e-6；时间戳精确整数；无WCET结论",
+      "termination": "全部检查通过返回0；首项失败返回1；全新进程"
+    },
+    {
+      "id": "TC-SERVO-TIME",
+      "requirementIds": [
+        "REQ-PID-011"
+      ],
+      "testName": "REQ-SERVO-TIME",
+      "level": "integration",
+      "types": [
+        "interface",
+        "safety",
+        "regression"
+      ],
+      "initialState": "Servo清零，有效配置Kp=2,Ki=Kd=0,dt=0.1,限幅±10；台架模型初始y=0",
+      "inputs": "时间0→200000→400001微秒；另行重置后重复/倒退时刻",
+      "execution": "运行test_servo TIME；调用真实监督层和PID，逐步断言状态/输出",
+      "expected": "上界200000接受；超界、重复、倒退均FAULT且输出0",
+      "tolerance": "普通浮点绝对误差<1e-9；闭环终值<1e-6；时间戳精确整数；无WCET结论",
+      "termination": "全部检查通过返回0；首项失败返回1；全新进程"
+    },
+    {
+      "id": "TC-SERVO-RECOVERY",
+      "requirementIds": [
+        "REQ-PID-012"
+      ],
+      "testName": "REQ-SERVO-RECOVERY",
+      "level": "integration",
+      "types": [
+        "interface",
+        "safety",
+        "regression"
+      ],
+      "initialState": "Servo清零，有效配置Kp=2,Ki=Kd=0,dt=0.1,限幅±10；台架模型初始y=0",
+      "inputs": "无效采样→有效采样→禁用→显式复位→有效启用",
+      "execution": "运行test_servo RECOVERY；调用真实监督层和PID，逐步断言状态/输出",
+      "expected": "故障保持直到复位；复位DISABLED；启用ACTIVE输出2",
+      "tolerance": "普通浮点绝对误差<1e-9；闭环终值<1e-6；时间戳精确整数；无WCET结论",
+      "termination": "全部检查通过返回0；首项失败返回1；全新进程"
+    },
+    {
+      "id": "TC-SERVO-SIM",
+      "requirementIds": [
+        "REQ-PID-009",
+        "REQ-PID-010",
+        "REQ-PID-012"
+      ],
+      "testName": "REQ-SERVO-SIM",
+      "level": "configuration-item",
+      "types": [
+        "functional",
+        "safety",
+        "regression"
+      ],
+      "initialState": "Servo清零，有效配置Kp=2,Ki=Kd=0,dt=0.1,限幅±10；台架模型初始y=0",
+      "inputs": "200步台架闭环→传感器故障→复位→重新启用→禁用",
+      "execution": "运行test_servo SIM；调用真实监督层和PID，逐步断言状态/输出",
+      "expected": "200步误差<1e-6；输出限幅；故障输出0并锁存；恢复成功；禁用清历史",
+      "tolerance": "普通浮点绝对误差<1e-9；闭环终值<1e-6；时间戳精确整数；无WCET结论",
+      "termination": "全部检查通过返回0；首项失败返回1；全新进程"
+    }
+  ]
+}

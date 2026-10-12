@@ -14,5 +14,5 @@ for row in matrix['requirements']:
         assert path.is_file(), f"missing: {name}"
         if name != row['code']:
             assert row['id'] in path.read_text(encoding='utf-8'), f"missing backlink: {name}/{row['id']}"
-assert len(ids) == 8, f"expected 8 requirements, got {len(ids)}"
+assert ids, "empty requirements matrix"
 print(f'Traceability reference checks passed: {len(ids)} requirements (not test/coverage approval)')

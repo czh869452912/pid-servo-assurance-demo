@@ -1,0 +1,33 @@
+name: Engineering lifecycle object
+description: Controlled requirement, design, test, problem, change or review record
+title: "[OBJECT-ID] "
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Object type
+      options: [requirement, design, test, problem, change, review, process]
+    validations:
+      required: true
+  - type: textarea
+    id: metadata
+    attributes:
+      label: Machine metadata
+      description: Include the aviation-object JSON comment with id, kind and requirementIds.
+      placeholder: '<!-- aviation-object {"id":"PR-PID-001","kind":"problem","requirementIds":["REQ-PID-004"]} -->'
+    validations:
+      required: true
+  - type: textarea
+    id: content
+    attributes:
+      label: Definition and impact
+      description: State the controlled file, requirements, input and expected outcome, affected versions and necessary verification.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and review
+      description: Identify the source commit, PR, run attempt and artifacts. Record the human review separately.
+    validations:
+      required: true
